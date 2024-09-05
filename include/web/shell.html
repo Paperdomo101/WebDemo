@@ -1,0 +1,101 @@
+<html>
+    <head>
+        <style>
+            body {
+                margin: 0px;
+            }
+            canvas.emscripten {
+                object-fit: contain;
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+                width: 100%;
+                background-color: black;
+                image-rendering: optimizeSpeed;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: pixelated;
+                -webkit-tap-highlight-color: transparent; /* transparent with keyword */
+                -webkit-tap-highlight-color: rgba(0,0,0,0); /* transparent with rgba */
+                -webkit-tap-highlight-color: hsla(0,0,0,0); /* transparent with hsla */
+                -webkit-tap-highlight-color: #00000000; /* transparent with hex with alpha */
+                -webkit-tap-highlight-color: #0000; /* transparent with short hex with alpha */
+                outline: 0;
+                border-radius: 0;
+            }
+        </style>
+
+        <script type='text/javascript' src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js/dist/FileSaver.min.js"> </script>
+            <script type='text/javascript'>
+                function saveFileFromMEMFSToDisk(memoryFSname, localFSname)     // This can be called by C/C++ code
+                {
+                    var isSafari = false; // Not supported, navigator.userAgent access is being restricted
+                    //var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+                    var data = FS.readFile(memoryFSname);
+                    var blob;
+
+                    if (isSafari) blob = new Blob([data.buffer], { type: "application/octet-stream" });
+                    else blob = new Blob([data.buffer], { type: "application/octet-binary" });
+
+                    // NOTE: SaveAsDialog is a browser setting. For example, in Google Chrome,
+                    // in Settings/Advanced/Downloads section you have a setting:
+                    // 'Ask where to save each file before downloading' - which you can set true/false.
+                    // If you enable this setting it would always ask you and bring the SaveAsDialog
+                    saveAs(blob, localFSname);
+                }
+        </script>
+        <script>
+            // This prevents inputs from scrolling the webpage
+            window.addEventListener(
+                "keydown",
+                function (e) {
+                    if ( ["Space", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+                        e.preventDefault();
+                    }
+                },
+                false,
+            );
+        </script>
+    </head>
+
+    <body>
+        <canvas
+            class="emscripten"
+            id="canvas"
+            oncontextmenu="event.preventDefault()"
+            tabindex="-1"
+        ></canvas>
+        <p id="output" />
+        <script>
+            var Module = {
+                print: (function () {
+                    var element = document.getElementById("output");
+                    if (element) element.value = ""; // clear browser cache
+                    return function (text) {
+                        if (arguments.length > 1)
+                            text = Array.prototype.slice
+                                .call(arguments)
+                                .join(" ");
+                        console.log(text);
+                        if (element) {
+                            element.value += text + "\n";
+                            element.scrollTop = element.scrollHeight; // focus on bottom
+                        }
+                    };
+                })(),
+                canvas: (function () {
+                    var canvas = document.getElementById("canvas");
+                    return canvas;
+                })(),
+            };
+        </script>
+        {{{ SCRIPT }}}
+    </body>
+</html>
