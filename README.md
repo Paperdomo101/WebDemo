@@ -1,6 +1,6 @@
 # Raylib Web Demo
 
-A web-embeddable Raylib project.
+![the demo](https://github.com/user-attachments/assets/fd86b7f3-2b4d-423e-8e5f-ee5f8ced497d)
 
 ### Prerequisites
 
