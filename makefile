@@ -31,11 +31,11 @@ BROWSER = firefox
 
 web_build:
 	mkdir -p build && \
-	cd $(EMSDK_PATH) && source ./emsdk_env.sh && cd ${PWD} && \
+	cd $(EMSDK_PATH) && source ./emsdk_env.sh && cd "${PWD}" && \
 	emcc -o $(WEB_OUT) $(DEFINES) $(CFILES) $(INCLUDES) $(WEB_OPT)
 
 web_run:
-	cd $(EMSDK_PATH) && source ./emsdk_env.sh && cd ${PWD} && \
+	cd $(EMSDK_PATH) && source ./emsdk_env.sh && cd "${PWD}" && \
 	emrun $(WEB_OUT) --browser $(BROWSER)
 
 web_zip:
