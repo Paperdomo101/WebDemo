@@ -63,6 +63,7 @@ void Update(void)
         screen_height = GetScreenHeight();
         screen_scale = fminf(screen_width / (float)BASE_WIDTH, screen_height / (float)BASE_HEIGHT);
         SetShaderValue(shd_gradient, GetShaderLocation(shd_gradient, "resolution"), &(Vector2){screen_width, screen_height}, SHADER_UNIFORM_VEC2);
+        recalculate_screen_resolution = false;
     }
 }
 
