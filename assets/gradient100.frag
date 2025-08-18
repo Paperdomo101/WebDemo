@@ -8,10 +8,10 @@ varying vec4 fragColor;
 
 uniform vec2 resolution;
 
-const float NOISE_GRANULARITY = 0.5/255.0;
+const float NOISE_GRANULARITY = 0.5 / 255.0;
 
 float random(vec2 coords) {
-    return fract(sin(dot(coords.xy, vec2(12.9898,78.233))) * 43758.5453);
+    return fract(sin(dot(coords.xy, vec2(12.9898, 78.233))) * 43758.5453);
 }
 
 void main() {
